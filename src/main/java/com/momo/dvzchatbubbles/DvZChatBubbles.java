@@ -75,9 +75,9 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
                     new BukkitRunnable() {
                         public void run() {
                         	chatBubble.removeChatBubble();
-                            bubbleList.remove(chatBubble);
                         }
                     }.runTask(DvZChatBubbles.getInstance());
+                    bubbleList.remove(chatBubble);
                     cancel();
                 }
             }
