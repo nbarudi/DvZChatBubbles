@@ -3,6 +3,8 @@ package com.momo.dvzchatbubbles;
 import org.bukkit.entity.Display.Billboard;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,17 +33,15 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
         final String message = event.getMessage();
 
         // Create the display entity
-        new BukkitRunnable() {
-            public void run() {
-                ChatBubble chatBubble = new ChatBubble(player, message);
-            }
-        }.runTask(this);
+        ChatBubble chatBubble = new ChatBubble(player, message);
+        Bukkit.getScheduler().runTask(this, () -> chatBubble.spawnChatBubble());
 
         // Update the entity location every tick
         new BukkitRunnable() {
+        	int count = 0;
+        	int duration = 60;
+
             public void run() {
-            	int count = 0;
-            	int duration = 60;
                 if (count < duration) {
                 	count++;
                 } else {
@@ -49,22 +49,27 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
                     cancel();
                 }
             }
-        }.runTaskTimer(this, 1L, 1L);
+        }.runTaskTimer(this, 1, 1);
     }
 
-    private class ChatBubble {
+    public class ChatBubble {
     	Player player;
+    	String message;
     	TextDisplay display;
     	Location location;
 
-    	private ChatBubble(Player player, String message) {
+    	public ChatBubble(Player player, String message) {
     		this.player = player;
-    		location = player.getLocation();
-    		location.setY(location.getY() + 2);
-    		this.display = player.getWorld().spawn(location, TextDisplay.class);
+    		this.message = message;
+    		this.location = player.getLocation();
+    		this.location.setY(location.getY() + 2);
+    	}
+
+    	public void spawnChatBubble() {
+    		this.display = this.player.getWorld().spawn(this.location, TextDisplay.class);
     		this.display.setBillboard(Billboard.CENTER);
     		this.display.setLineWidth(150);
-    		this.display.setText(message);
+    		this.display.setText(this.message);
     		this.display.setSeeThrough(true);
     	}
     }
