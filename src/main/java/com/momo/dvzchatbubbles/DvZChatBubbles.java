@@ -1,6 +1,8 @@
 package com.momo.dvzchatbubbles;
 
 import org.bukkit.entity.Display.Billboard;
+import org.bukkit.entity.Display.Brightness;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
@@ -45,6 +47,7 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
             	}
 
                 if (count < duration) {
+                	chatBubble.updatePosition();
                 	count++;
                 } else {
                 	chatBubble.removeChatBubble();
@@ -55,28 +58,39 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     }
 
     public class ChatBubble {
-    	Player player;
-    	String message;
-    	TextDisplay display;
-    	Location location;
+    	private Player player;
+    	private String message;
+    	private TextDisplay display = null;
+    	private Location location;
 
     	public ChatBubble(Player player, String message) {
     		this.player = player;
     		this.message = message;
-    		this.location = player.getLocation();
-    		this.location.setY(location.getY() + 2);
     	}
 
     	public void spawnChatBubble() {
+    		this.updatePosition();
     		this.display = this.player.getWorld().spawn(this.location, TextDisplay.class);
     		this.display.setBillboard(Billboard.CENTER);
     		this.display.setLineWidth(150);
     		this.display.setText(this.message);
-    		this.display.setSeeThrough(true);
+    		this.display.setSeeThrough(false);
+    		this.display.setDefaultBackground(false);
+    		this.display.setInterpolationDuration(5000);
+    		this.display.setShadowed(true);
+    		this.display.setBrightness(new Brightness(15, 15));
     	}
 
     	public void removeChatBubble() {
     		this.display.remove();
+    	}
+
+    	public void updatePosition() {
+    		this.location = this.player.getLocation();
+    		this.location.setY(this.location.getY() + 2);
+    		if (this.display != null) {
+    			this.display.teleport(this.location);
+    		}
     	}
     }
 }
