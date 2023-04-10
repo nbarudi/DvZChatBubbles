@@ -68,9 +68,9 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     	}
 
     	public void spawnChatBubble() {
+    		this.updatePosition();
     		this.display = this.player.getWorld().spawn(this.location, TextDisplay.class);
     		this.display.setText(this.message);
-    		this.updatePosition();
 
     		this.display.setBillboard(Billboard.CENTER);
     		this.display.setLineWidth(150);

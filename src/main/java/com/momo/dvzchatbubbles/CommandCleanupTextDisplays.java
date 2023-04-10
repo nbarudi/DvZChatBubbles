@@ -16,17 +16,19 @@ public class CommandCleanupTextDisplays implements CommandExecutor {
 		int radius = 5;
 
 		if (args.length > 0) {
-			radius = Integer.parseInt(args[0]);
+			try {
+				radius = Integer.parseInt(args[0]);
+			} catch (NumberFormatException e) {
+				return false;
+			}
 		}
 
-		boolean success = false;
 		for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
 			if (entity instanceof TextDisplay) {
 				entity.remove();
-				success = true;
 			}
 		}
-		return success;
+		return true;
 	}
 
 }
