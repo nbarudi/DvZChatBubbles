@@ -82,7 +82,8 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     	private Player player;
     	private String message;
     	private TextDisplay display = null;
-    	private Location startLocation;
+    	private Location prevLocation;
+    	private Location predLocation;
 
     	public ChatBubble(Player player, String message) {
     		this.player = player;
@@ -90,11 +91,9 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     	}
 
     	public void spawnChatBubble() {
-    		this.startLocation = this.player.getLocation().clone();
-    		this.startLocation.setY(this.startLocation.getY() + 2);
-    		this.startLocation.setPitch(0F);
-    		this.startLocation.setYaw(0F);
-    		this.display = this.player.getWorld().spawn(this.startLocation, TextDisplay.class);
+    		this.prevLocation = this.player.getLocation().clone();
+    		this.prevLocation.setY(this.prevLocation.getY() + 2);
+    		this.display = this.player.getWorld().spawn(this.prevLocation, TextDisplay.class);
     		this.display.setText(this.message);
 
     		this.display.setBillboard(Billboard.CENTER);
@@ -112,22 +111,26 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
 
     	public void updatePosition() {
     		if (this.display != null && this.player != null && this.player.isValid()) {
-        		Location currentLocation = this.player.getLocation().clone();
-        		currentLocation.setY(currentLocation.getY() + 2);
-        		currentLocation.setPitch(0F);
-        		currentLocation.setYaw(0F);
+        		Location currLocation = this.player.getLocation().clone();
+        		currLocation.setY(currLocation.getY() + 2);
 
-                Vector3f translation = new Vector3f(
-            		(float) (currentLocation.getX() - this.startLocation.getX()),
-            		(float) (currentLocation.getY() - this.startLocation.getY()),
-            		(float) (currentLocation.getZ() - this.startLocation.getZ())
+                Vector3f change = new Vector3f(
+            		(float) (currLocation.getX() - this.prevLocation.getX()),
+            		0F,
+            		(float) (currLocation.getZ() - this.prevLocation.getZ())
         		);
+
+                this.predLocation = currLocation.clone().add(change.x, change.y, change.z);
+    			this.display.teleport(this.predLocation);
+
         		AxisAngle4f leftRotation = new AxisAngle4f(0, 0, 0, 0);
         		Vector3f scale = new Vector3f(1, 1, 1);
         		AxisAngle4f rightRotation = new AxisAngle4f(0, 0, 0, 0);
 
-        		this.display.setInterpolationDelay(0);
-    			this.display.setTransformation(new Transformation(translation, leftRotation, scale, rightRotation));
+        		this.display.setInterpolationDelay(-1);
+    			this.display.setTransformation(new Transformation(change, leftRotation, scale, rightRotation));
+
+    			this.prevLocation = currLocation;
     		}
     	}
     }
