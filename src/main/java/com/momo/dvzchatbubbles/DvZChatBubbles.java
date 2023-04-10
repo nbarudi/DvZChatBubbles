@@ -93,6 +93,10 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     	public void spawnChatBubble() {
     		this.prevLocation = this.player.getLocation().clone();
     		this.prevLocation.setY(this.prevLocation.getY() + 2);
+    		this.prevLocation.setPitch(0);
+    		this.prevLocation.setYaw(0);
+    		this.predLocation = this.prevLocation.clone();
+
     		this.display = this.player.getWorld().spawn(this.prevLocation, TextDisplay.class);
     		this.display.setText(this.message);
 
@@ -113,6 +117,8 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     		if (this.display != null && this.player != null && this.player.isValid()) {
         		Location currLocation = this.player.getLocation().clone();
         		currLocation.setY(currLocation.getY() + 2);
+        		currLocation.setPitch(0);
+        		currLocation.setYaw(0);
 
                 Vector3f change = new Vector3f(
             		(float) (currLocation.getX() - this.prevLocation.getX()),
@@ -120,15 +126,11 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
             		(float) (currLocation.getZ() - this.prevLocation.getZ())
         		);
 
-                this.predLocation = currLocation.clone().add(change.x, change.y, change.z);
     			this.display.teleport(this.predLocation);
-
-        		AxisAngle4f leftRotation = new AxisAngle4f(0, 0, 0, 0);
-        		Vector3f scale = new Vector3f(1, 1, 1);
-        		AxisAngle4f rightRotation = new AxisAngle4f(0, 0, 0, 0);
+                this.predLocation = currLocation.clone().add(change.x, change.y, change.z);
 
         		this.display.setInterpolationDelay(-1);
-    			this.display.setTransformation(new Transformation(change, leftRotation, scale, rightRotation));
+    			this.display.setTransformation(new Transformation(change, new AxisAngle4f(), new Vector3f(1), new AxisAngle4f()));
 
     			this.prevLocation = currLocation;
     		}
