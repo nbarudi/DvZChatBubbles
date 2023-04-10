@@ -31,10 +31,9 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
         // Cancel the default chat message
         event.setCancelled(true);
 
-        final Player player = event.getPlayer();
         final String message = event.getMessage();
 
-        ChatBubble chatBubble = new ChatBubble(player, message);
+        ChatBubble chatBubble = new ChatBubble(event.getPlayer(), message);
 
         // Create the display entity and then track it to the players location
         new BukkitRunnable() {
