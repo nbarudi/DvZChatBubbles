@@ -22,9 +22,11 @@ import org.joml.Vector3f;
 public class DvZChatBubbles extends JavaPlugin implements Listener {
 
 	private static List<ChatBubble> bubbleList;
+	private static DvZChatBubbles instance;
 
     public DvZChatBubbles() {
     	bubbleList = new ArrayList<ChatBubble>();
+    	instance = this;
     }
 
     @Override
@@ -52,30 +54,42 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
         ChatBubble chatBubble = new ChatBubble(event.getPlayer(), message);
         bubbleList.add(chatBubble);
 
-        // Create the display entity and then track it to the players location
+        // Create the display ChatBubble synchronously
+        new BukkitRunnable() {
+            public void run() {
+            	chatBubble.spawnChatBubble();
+            }
+        }.runTask(this);
+
+        // Repeating asynchronous task to update the ChatBubble's position
         new BukkitRunnable() {
         	int count = 0;
-        	int duration = Math.max(message.length() * 2, 60);
+        	int duration = Math.max(message.length(), 60);
 
             public void run() {
-            	if (count == 0) {
-                	chatBubble.spawnChatBubble();
-            	}
-
                 if (count < duration) {
                 	chatBubble.updatePosition();
                 	count++;
                 } else {
-                	chatBubble.removeChatBubble();
+                    // Remove the display ChatBubble synchronously
+                    new BukkitRunnable() {
+                        public void run() {
+                        	chatBubble.removeChatBubble();
+                        }
+                    }.runTask(DvZChatBubbles.getInstance());
+                    bubbleList.remove(chatBubble);
                     cancel();
                 }
             }
-        }.runTaskTimer(this, 0, 1);
-        bubbleList.remove(chatBubble);
+        }.runTaskTimerAsynchronously(this, 1, 1);
     }
 
     public static List<ChatBubble> getBubbleList() {
 		return bubbleList;
+	}
+
+	public static DvZChatBubbles getInstance() {
+		return instance;
 	}
 
 	public class ChatBubble {
