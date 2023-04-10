@@ -3,3 +3,8 @@ main: com.momo.dvzchatbubbles.DvZChatBubbles
 version: 1.0
 authors: [Momo the Bard]
 api-version: "1.19"
+commands:
+   cleanuptextdisplays:
+      description: Clean up TextDisplays in a radius
+      usage: /cleanuptextdisplays (radius)
+      permission: dvzchatbubbles.command.cleanuptextdisplays

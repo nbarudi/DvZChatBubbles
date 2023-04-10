@@ -21,7 +21,9 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(this, this);
+    	this.getCommand("cleanuptextdisplays").setExecutor(new CommandCleanupTextDisplays());
+
+        this.getServer().getPluginManager().registerEvents(this, this);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
