@@ -98,7 +98,7 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     		this.display.setInterpolationDelay(-1);
 			this.display.setTransformation(new Transformation(new Vector3f(0F,0.8F,0F), new AxisAngle4f(), new Vector3f(1), new AxisAngle4f()));
 
-			this.player.setPassenger(this.display);
+			this.player.addPassenger(this.display);
     	}
 
     	public void removeChatBubble() {
