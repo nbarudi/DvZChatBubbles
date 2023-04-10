@@ -62,7 +62,6 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
         new BukkitRunnable() {
             public void run() {
             	chatBubble.removeChatBubble();
-                bubbleList.remove(chatBubble);
             }
         }.runTaskLater(this, Math.max(message.length(), 60));
     }
@@ -103,7 +102,10 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     	}
 
     	public void removeChatBubble() {
-    		this.display.remove();
+    		if (this.display == null && this.display.isValid()) {
+        		this.display.remove();
+    		}
+            bubbleList.remove(this);
     	}
     }
 }
