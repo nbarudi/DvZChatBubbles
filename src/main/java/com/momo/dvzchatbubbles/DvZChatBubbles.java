@@ -2,11 +2,9 @@ package com.momo.dvzchatbubbles;
 
 import org.bukkit.entity.Display.Billboard;
 import org.bukkit.entity.Display.Brightness;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
