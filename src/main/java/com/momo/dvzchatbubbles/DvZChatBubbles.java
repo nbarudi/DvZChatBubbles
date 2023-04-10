@@ -32,24 +32,26 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
         final Player player = event.getPlayer();
         final String message = event.getMessage();
 
-        // Create the display entity
         ChatBubble chatBubble = new ChatBubble(player, message);
-        Bukkit.getScheduler().runTask(this, () -> chatBubble.spawnChatBubble());
 
-        // Update the entity location every tick
+        // Create the display entity and then track it to the players location
         new BukkitRunnable() {
         	int count = 0;
-        	int duration = 60;
+        	int duration = Math.max(message.length() * 2, 60);
 
             public void run() {
+            	if (count == 0) {
+                	chatBubble.spawnChatBubble();
+            	}
+
                 if (count < duration) {
                 	count++;
                 } else {
-                	chatBubble.display.remove();
+                	chatBubble.removeChatBubble();
                     cancel();
                 }
             }
-        }.runTaskTimer(this, 1, 1);
+        }.runTaskTimer(this, 0, 1);
     }
 
     public class ChatBubble {
@@ -71,6 +73,10 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     		this.display.setLineWidth(150);
     		this.display.setText(this.message);
     		this.display.setSeeThrough(true);
+    	}
+
+    	public void removeChatBubble() {
+    		this.display.remove();
     	}
     }
 }
