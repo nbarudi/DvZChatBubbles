@@ -24,7 +24,7 @@ public class CommandCleanupTextDisplays implements CommandExecutor {
 		}
 
 		for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
-			if (entity instanceof TextDisplay && !DvZChatBubbles.getBubbleList().contains(entity)) {
+			if (entity instanceof TextDisplay && !DvZChatBubbles.getChatBubbles().contains(entity)) {
 				entity.remove();
 			}
 		}
