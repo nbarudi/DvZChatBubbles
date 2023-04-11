@@ -140,6 +140,13 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
     	}
 
     	public boolean removeMessage(int id) {
+    		for (int i = id - 1; i > -1; i--) {
+    		    if (this.messages.get(i) != null) {
+    		    	this.messages.set(i, this.messages.get(i) + "\n" + this.messages.get(id));
+    		    	break;
+    		    }
+    		}
+
     		this.messages.set(id, null);
 
     		String message = this.makeMessage();
