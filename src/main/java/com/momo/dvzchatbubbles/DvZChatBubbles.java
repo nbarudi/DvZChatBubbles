@@ -55,10 +55,10 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
         final String message = event.getMessage();
 
         if (!playerChatBubbles.containsKey(player)) {
+            // Create the display entity and attach it to a player
             ChatBubble chatBubble = new ChatBubble(player, message);
             playerChatBubbles.put(player, chatBubble);
 
-            // Create the display entity and then track it to the players location
             new BukkitRunnable() {
                 public void run() {
                 	chatBubble.spawn();
@@ -71,6 +71,7 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
                 }
             }.runTaskLater(this, Math.max(message.length(), 60));
         } else {
+        	// Get the display entity and add new lines to it
         	ChatBubble chatBubble = playerChatBubbles.get(player);
 
         	int messageID = chatBubble.addMessage(message);
