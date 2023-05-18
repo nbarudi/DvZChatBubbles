@@ -33,7 +33,7 @@ public class DvZChatBubbles extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-    	this.getCommand("cleanuptextdisplays").setExecutor(new CommandCleanupTextDisplays());
+    	this.getCommand("cleantextdisplays").setExecutor(new CommandCleanTextDisplays());
 
         this.getServer().getPluginManager().registerEvents(this, this);
     }
