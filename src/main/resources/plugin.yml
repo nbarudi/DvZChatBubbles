@@ -1,10 +1,5 @@
 name: DvZChatBubbles
 main: com.momo.dvzchatbubbles.DvZChatBubbles
-version: 1.0
-authors: [Momo the Bard]
+version: 1.1
+authors: [Momo the Bard, Bungo]
 api-version: "1.19"
-commands:
-   cleanuptextdisplays:
-      description: Clean up TextDisplays in a radius
-      usage: /cleanuptextdisplays (radius)
-      permission: dvzchatbubbles.command.cleanuptextdisplays
