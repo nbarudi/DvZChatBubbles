@@ -19,7 +19,7 @@ public class CommandSendMessage extends Command {
         super(name);
         this.usageMessage = "/" + this.getName() + " <Message>";
         this.description = "Send a Bubble Chat message!";
-        this.setPermission("dvzchatbubbles.command.sendmessage");
+        //this.setPermission("dvzchatbubbles.command.sendmessage");
 
         this.setAliases(new ArrayList<>() {{
             add("me");
@@ -27,12 +27,19 @@ public class CommandSendMessage extends Command {
             add("message");
             add("sendm");
         }});
+
+        //this.permissionMessage(Component.text(ChatColor.DARK_RED + "Sorry! You do not have permission to this command yet!"));
     }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
 
         if(!(sender instanceof Player player)) return false;
+
+        if(!player.hasPermission("dvzchatbubbles.command.sendmessage")){
+            player.sendMessage(Component.text(ChatColor.DARK_RED + "Sorry! You do not have permission to this command yet!"));
+            return false;
+        }
 
         if(args.length == 0) {
             player.sendMessage(Component.text(ChatColor.RED + "Invalid Usage: " + this.usageMessage));
