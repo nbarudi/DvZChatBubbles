@@ -51,7 +51,7 @@ public class CommandSendMessage extends Command {
             builder.append(word).append(" ");
         }
 
-        String message = builder.substring(0, builder.length()-1);
+        String message = builder.substring(0, Math.min(builder.length()-1, 50));
 
         if(!DvZChatBubbles.getInstance().playerChatBubbles.containsKey(player)){
             ChatBubble chatBubble = new ChatBubble(player, message);
