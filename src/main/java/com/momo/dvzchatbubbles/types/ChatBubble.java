@@ -1,6 +1,7 @@
 package com.momo.dvzchatbubbles.types;
 
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -8,10 +9,7 @@ import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ChatBubble {
 
@@ -40,7 +38,10 @@ public class ChatBubble {
 
         this.display.setInterpolationDuration(0);
         this.display.setInterpolationDelay(-1);
-        this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F,0.5F), new AxisAngle4f(), new Vector3f(1), new AxisAngle4f()));
+
+        double playerScale = Objects.requireNonNull(this.player.getAttribute(Attribute.GENERIC_SCALE)).getValue();
+
+        this.display.setTransformation(new Transformation(new Vector3f(0F,-0.6F*(float)playerScale,0.5F*(float)playerScale), new AxisAngle4f(), new Vector3f((float)playerScale), new AxisAngle4f()));
 
         this.player.addPassenger(this.display);
     }
